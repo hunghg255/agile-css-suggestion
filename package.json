@@ -2,6 +2,7 @@
   "name": "agile-css-suggestion",
   "displayName": "Agile CSS Suggestion",
   "description": "Intelligent Agile CSS tooling for VS Code",
+  "publisher": "AgileCssSuggestion",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.77.0"
@@ -68,8 +69,5 @@
     "typescript": "^4.9.5",
     "webpack": "^5.76.3",
     "webpack-cli": "^5.0.1"
-  },
-  "dependencies": {
-    "html-to-ast": "^0.0.6"
   }
 }
