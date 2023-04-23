@@ -19,10 +19,7 @@ const onReplace = (className: string) => {
     .map((v) => v.trim());
 };
 
-function provideCompletionItems(
-  document: vscode.TextDocument,
-  position: vscode.Position
-) {
+function provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
   const typeText = document
     .lineAt(position)
     .text.substring(position.character - 1, position.character);
@@ -47,7 +44,7 @@ function provideCompletionItems(
     const files: string[] = fs.readdirSync(dir);
     // filter target file
     const target: string[] = files.filter((item: string) =>
-      extensionArray.includes(item.split('.')[1])
+      extensionArray.includes(item.split('.')[1]),
     );
     // get target files class name
     target.forEach((item: string) => {
@@ -74,7 +71,7 @@ function provideCompletionItems(
     .filter((v) => !regWords.includes(v))
     .map((ele: string) => {
       const snippetCompletion = new vscode.CompletionItem({
-        label: document.languageId === 'vue' ? ele :`.${ele}`,
+        label: document.languageId === 'vue' ? ele : `.${ele}`,
         description: 'Agile Css Suggestion',
       });
       if (document.languageId !== 'vue') {
@@ -129,7 +126,7 @@ export function activate(context: vscode.ExtensionContext) {
       provideCompletionItems,
       resolveCompletionItem,
     },
-    '.'
+    '.',
   );
 
   context.subscriptions.push(disposable);
