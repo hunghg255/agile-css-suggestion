@@ -1,19 +1,17 @@
 import * as vscode from 'vscode';
-
 import * as fs from 'fs';
 import * as path from 'path';
 
 const extensionArray: string[] = ['htm', 'html', 'jsx', 'tsx', 'js'];
 const htmMatchRegex = /class=["'][\w- ]+["']/g;
 const reactMatchRegex =
-  /className=[',",{,\`][a-zA-Z0-9:;.\s\(\)\-,\_'"\+\{\[\}\]\`\$\?]*[',",},\`]/g;
+  /className=[',",{,\`][a-zA-Z0-9:;.\s\(\)\-,\_'"\=\+\{\[\}\]\`\$\?]*[',",},\`]/g;
 const fileSep = path.sep;
-
-const regWords = /(classNames|sx|cls|clx|true|false|styles)/g;
+const regWords = ['styles', 'classNames', 'clx', 'cls', 'true', 'false'];
 
 const onReplace = (className: string) => {
   let classNameFormat = className.replace(/styles\./g, ' ');
-  classNameFormat = className.replace(/['"\{\[\]\}\.\,\:\$\`\(\)\+\?]/g, ' ');
+  classNameFormat = className.replace(/['"\{\[\]\}\.\,\:\$\`\(\)\+\?\=]/g, ' ');
 
   return classNameFormat
     .split(' ')
@@ -73,16 +71,18 @@ function provideCompletionItems(
   classNames = [...new Set(classNames)];
 
   return classNames
-    .filter((v) => !regWords.test(v))
+    .filter((v) => !regWords.includes(v))
     .map((ele: string) => {
-      const snippetCompletion = new vscode.CompletionItem(
-        document.languageId === 'vue' ? `${ele} ` : `.${ele} `,
-        vscode.CompletionItemKind.Text
-      );
-      snippetCompletion.insertText = new vscode.SnippetString(`
+      const snippetCompletion = new vscode.CompletionItem({
+        label: document.languageId === 'vue' ? ele :`.${ele}`,
+        description: 'Agile Css Suggestion',
+      });
+      if (document.languageId !== 'vue') {
+        snippetCompletion.insertText = new vscode.SnippetString(`
 .${ele} {
-	${`\${0}`}
+  ${`\${0}`}
 }`);
+      }
 
       return snippetCompletion;
     });
@@ -91,18 +91,17 @@ function provideCompletionItems(
 function getClass(path: string) {
   const data: string = fs.readFileSync(path, 'utf8').split('\n').join('');
 
-  let result;
   // htm/html/vue use class
   if (path.includes('htm') || path.includes('vue')) {
-    result = data.match(htmMatchRegex);
+    return data.match(htmMatchRegex) ?? [];
   }
 
   // tsx/jsx use className
   if (path.includes('sx') || path.includes('js')) {
-    result = data.match(reactMatchRegex);
+    return data.match(reactMatchRegex) ?? [];
   }
 
-  return result || [];
+  return [];
 }
 
 /**
