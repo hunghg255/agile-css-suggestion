@@ -5,17 +5,17 @@ import * as path from 'path';
 const extensionArray: string[] = ['htm', 'html', 'jsx', 'tsx', 'js'];
 const htmMatchRegex = /class=["'][\w- ]+["']/g;
 const reactMatchRegex =
-  /className=[',",{,\`][a-zA-Z0-9:;.\s\(\)\-,\_'"\=\+\{\[\}\]\`\$\?\<\>]*[',",},\`]/g;
+  /className=[',",{,\`][a-zA-Z0-9\:\;\.\s\(\)\-\,\_\'\"\=\+\{\[\}\]\`\$\?\<\>\!\|\&]*[',",},\`]/g;
 const fileSep = path.sep;
 const regWords = ['styles', 'classNames', 'clx', 'cls', 'true', 'false'];
 
 const onReplace = (className: string) => {
   let classNameFormat = className.replace(/styles\./g, ' ');
-  classNameFormat = className.replace(/['"\{\[\]\}\.\,\:\$\`\(\)\+\?\=\>\<]/g, ' ');
+  classNameFormat = className.replace(/['"\{\[\]\}\.\,\:\$\`\(\)\+\?\=\>\<\&\|\!]/g, ' ');
 
   return classNameFormat
     .split(' ')
-    .filter(Boolean)
+    .filter((v) => v.length > 2)
     .map((v) => v.trim());
 };
 
@@ -55,7 +55,7 @@ function provideCompletionItems(document: vscode.TextDocument, position: vscode.
   }
 
   classNames = classNames.reduce((arr, ele) => {
-    const className: string = ele.split('=')[1];
+    const className: string = ele.split(document.languageId === 'vue' ? 'class=' : 'className=')[1];
 
     const field: string[] = onReplace(className);
 
@@ -63,6 +63,7 @@ function provideCompletionItems(document: vscode.TextDocument, position: vscode.
 
     return arr;
   }, [] as string[]);
+  vscode.window.showInformationMessage(JSON.stringify(classNames));
 
   // de-duplication
   classNames = [...new Set(classNames)];
@@ -71,12 +72,15 @@ function provideCompletionItems(document: vscode.TextDocument, position: vscode.
     .filter((v) => !regWords.includes(v))
     .map((ele: string) => {
       const snippetCompletion = new vscode.CompletionItem({
-        label: document.languageId === 'vue' ? ele : `.${ele}`,
+        label: `.${ele}`,
         description: 'Agile Css Suggestion',
       });
-      if (document.languageId !== 'vue') {
-        snippetCompletion.insertText = new vscode.SnippetString(`
-.${ele} {
+      if (document.languageId === 'vue') {
+        snippetCompletion.insertText = new vscode.SnippetString(`${ele} {
+  ${`\${0}`}
+}`);
+      } else {
+        snippetCompletion.insertText = new vscode.SnippetString(`.${ele} {
   ${`\${0}`}
 }`);
       }
