@@ -5,13 +5,13 @@ import * as path from 'path';
 const extensionArray: string[] = ['htm', 'html', 'jsx', 'tsx', 'js'];
 const htmMatchRegex = /class=["'][\w- ]+["']/g;
 const reactMatchRegex =
-  /className=[',",{,\`][a-zA-Z0-9:;.\s\(\)\-,\_'"\=\+\{\[\}\]\`\$\?]*[',",},\`]/g;
+  /className=[',",{,\`][a-zA-Z0-9:;.\s\(\)\-,\_'"\=\+\{\[\}\]\`\$\?\<\>]*[',",},\`]/g;
 const fileSep = path.sep;
 const regWords = ['styles', 'classNames', 'clx', 'cls', 'true', 'false'];
 
 const onReplace = (className: string) => {
   let classNameFormat = className.replace(/styles\./g, ' ');
-  classNameFormat = className.replace(/['"\{\[\]\}\.\,\:\$\`\(\)\+\?\=]/g, ' ');
+  classNameFormat = className.replace(/['"\{\[\]\}\.\,\:\$\`\(\)\+\?\=\>\<]/g, ' ');
 
   return classNameFormat
     .split(' ')

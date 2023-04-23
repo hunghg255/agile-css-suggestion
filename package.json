@@ -3,7 +3,7 @@
   "displayName": "Agile CSS Suggestion",
   "description": "Intelligent Agile CSS tooling for VS Code",
   "publisher": "AgileCssSuggestion",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "engines": {
     "vscode": "^1.77.0"
   },
