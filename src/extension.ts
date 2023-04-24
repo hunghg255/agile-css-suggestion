@@ -1,17 +1,16 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
+import { getClassNames } from './utils';
 
 const extensionArray: string[] = ['htm', 'html', 'jsx', 'tsx', 'js'];
 const htmMatchRegex = /class=["'][\w- ]+["']/g;
-const reactMatchRegex =
-  /className=[',",{,\`][a-zA-Z0-9\:\;\.\s\(\)\-\,\_\'\"\=\+\{\[\}\]\`\$\?\<\>\!\|\&]*[',",},\`]/g;
 const fileSep = path.sep;
 const regWords = ['styles', 'classNames', 'clx', 'cls', 'true', 'false'];
 
 const onReplace = (className: string) => {
   let classNameFormat = className.replace(/styles\./g, ' ');
-  classNameFormat = className.replace(/['"\{\[\]\}\.\,\:\$\`\(\)\+\?\=\>\<\&\|\!]/g, ' ');
+  classNameFormat = className.replace(/[\'\"\{\[\]\}\.\,\:\$\`\(\)\+\?\=\>\<\&\|\!]/g, ' ');
 
   return classNameFormat
     .split(' ')
@@ -63,7 +62,6 @@ function provideCompletionItems(document: vscode.TextDocument, position: vscode.
 
     return arr;
   }, [] as string[]);
-  vscode.window.showInformationMessage(JSON.stringify(classNames));
 
   // de-duplication
   classNames = [...new Set(classNames)];
@@ -99,7 +97,7 @@ function getClass(path: string) {
 
   // tsx/jsx use className
   if (path.includes('sx') || path.includes('js')) {
-    return data.match(reactMatchRegex) ?? [];
+    return getClassNames(data) ?? [];
   }
 
   return [];
