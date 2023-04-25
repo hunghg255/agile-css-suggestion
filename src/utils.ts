@@ -23,7 +23,7 @@ const removeDuplicate = (arr: string[]): string[] => {
 
 export const getClassNames = (value: string): string[] => {
   const regexp =
-    /className=(\"|\'|\`|\\s|\{)[a-zA-Z0-9\:\;\.\s\(\)\-\,\_\'\"\=\+\{\[\}\]\`\\$\?\<\>\!\|\&]*(\"|\'|\`|\\s|\{)/g;
+    /className=(\"|\'|\`|\\s|\{)[a-zA-Z0-9\:\;\.\s\(\)\-\,\_\'\"\=\+\{\[\}\]\`\\$\?\<\>\!\|\&]*(\"|\'|\`|\\s|\})/g;
 
   const classNames = [].concat(
     [],
