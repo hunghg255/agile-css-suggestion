@@ -6,7 +6,45 @@ import { getClassNames } from './utils';
 const extensionArray: string[] = ['htm', 'html', 'jsx', 'tsx', 'js'];
 const htmMatchRegex = /class=["'][\w- ]+["']/g;
 const fileSep = path.sep;
-const regWords = ['styles', 'classNames', 'clx', 'cls', 'true', 'false'];
+const regWords = [
+  'styles',
+  'classNames',
+  'cx',
+  'clx',
+  'cls',
+  'true',
+  'false',
+  'main',
+  'div',
+  'a',
+  'ul',
+  'li',
+  'section',
+  'nav',
+  'p',
+  'span',
+  'img',
+  'header',
+  'body',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'table',
+  'thead',
+  'tbody',
+  'tr',
+  'td',
+  'i',
+  'b',
+  'u',
+  'pre',
+  'ol',
+  'lh',
+  'input',
+  'abbr',
+];
 
 const onReplace = (className: string) => {
   let classNameFormat = className.replace(/styles\./g, ' ');
@@ -31,8 +69,11 @@ function provideCompletionItems(document: vscode.TextDocument, position: vscode.
   const filePath: string = document.fileName;
 
   let classNames: string[] = [];
+  const isVueFile =
+    document.languageId === 'vue' || filePath.includes('htm') || filePath.includes('vue');
+
   // vue
-  if (document.languageId === 'vue') {
+  if (isVueFile) {
     classNames = getClass(filePath);
   }
   // css-like file
@@ -54,7 +95,13 @@ function provideCompletionItems(document: vscode.TextDocument, position: vscode.
   }
 
   classNames = classNames.reduce((arr, ele) => {
-    const className: string = ele.split(document.languageId === 'vue' ? 'class=' : 'className=')[1];
+    let className: string = '';
+
+    if (isVueFile) {
+      className = ele.split('class=').join(' ');
+    } else {
+      className = ele.split('className=').join(' ');
+    }
 
     const field: string[] = onReplace(className);
 
