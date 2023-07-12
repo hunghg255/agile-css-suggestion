@@ -3,7 +3,7 @@
   "displayName": "Agile CSS Suggestion",
   "description": "Intelligent Agile CSS tooling for VS Code",
   "publisher": "AgileCssSuggestion",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "engines": {
     "vscode": "^1.77.0"
   },
@@ -40,8 +40,12 @@
     "onLanguage:js",
     "onLanguage:jsx",
     "onLanguage:tsx",
-    "onLanguage:html"
+    "onLanguage:html",
+    "onLanguage:svelte"
   ],
+  "files.associations": {
+    "*.svelte": "html"
+  },
   "icon": "./icon.png",
   "scripts": {
     "vscode:prepublish": "npm run package",

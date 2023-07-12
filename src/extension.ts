@@ -70,7 +70,11 @@ function provideCompletionItems(document: vscode.TextDocument, position: vscode.
 
   let classNames: string[] = [];
   const isVueFile =
-    document.languageId === 'vue' || filePath.includes('htm') || filePath.includes('vue');
+    document.languageId === 'vue' ||
+    document.languageId === 'svelte' ||
+    filePath.includes('htm') ||
+    filePath.includes('vue') ||
+    filePath.includes('svelte');
 
   // vue
   if (isVueFile) {
@@ -120,7 +124,7 @@ function provideCompletionItems(document: vscode.TextDocument, position: vscode.
         label: `.${ele}`,
         description: 'Agile Css Suggestion',
       });
-      if (document.languageId === 'vue') {
+      if (isVueFile) {
         snippetCompletion.insertText = new vscode.SnippetString(`${ele} {
   ${`\${0}`}
 }`);
@@ -138,7 +142,7 @@ function getClass(path: string) {
   const data: string = fs.readFileSync(path, 'utf8').split('\n').join('');
 
   // htm/html/vue use class
-  if (path.includes('htm') || path.includes('vue')) {
+  if (path.includes('html') || path.includes('vue') || path.includes('svelte')) {
     return data.match(htmMatchRegex) ?? [];
   }
 
@@ -170,6 +174,8 @@ export function activate(context: vscode.ExtensionContext) {
       { scheme: 'file', language: 'sass' },
       { scheme: 'file', language: 'stylus' },
       { scheme: 'file', language: 'vue' },
+      { scheme: 'file', language: 'html' },
+      { scheme: 'file', language: 'svelte' },
     ],
     {
       provideCompletionItems,
