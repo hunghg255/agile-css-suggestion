@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://www.npmjs.com/package/agile-css-suggestion" target="_blank" rel="noopener noreferrer">
+<a href="https://marketplace.visualstudio.com/items?itemName=AgileCssSuggestion.agile-css-suggestion" target="_blank" rel="noopener noreferrer">
 <img src="https://api.iconify.design/carbon:classification.svg?color=%23fdb4e2" alt="logo" width='100'/></a>
 </p>
 
