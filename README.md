@@ -8,8 +8,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/hunghg255/agile-css-suggestion/graphs/contributors" target="_blank" rel="noopener noreferrer"><img src="https://img.shields.io/badge/all_contributors-1-orange.svg" alt="Contributors" /></a>
-  <a href="https://github.com/hunghg255/agile-css-suggestion/blob/main/LICENSE" target="_blank" rel="noopener noreferrer"><img src="https://badgen.net/github/license/hunghg255/agile-css-suggestion" alt="License" /></a>
+    <a href="https://github.com/hunghg255/agile-css-suggestion/stargazers"><img src="https://img.shields.io/github/stars/hunghg255/agile-css-suggestion?colorA=363a4f&colorB=f9c35a&style=for-the-badge"></a>
+    <a href="https://marketplace.visualstudio.com/items?itemName=AgileCssSuggestion.agile-css-suggestion"><img src="https://img.shields.io/visual-studio-marketplace/azure-devops/installs/total/AgileCssSuggestion.agile-css-suggestion?colorA=363a4f&colorB=5BDfff&style=for-the-badge"></a>
 </p>
 
 ## Preview
